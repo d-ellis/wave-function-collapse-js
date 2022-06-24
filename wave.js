@@ -321,7 +321,7 @@ async function iterate(skipTiles = false) {
   gridEntropy[index[0]][index[1]] = 1;
   // Update entropies
   await calculateEntropies(index);
-  if (skipTiles) return;
+  if (skipTiles === true) return;
   // Update all visuals
   x = 0;
   while (x < size) {
