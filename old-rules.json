@@ -1,0 +1,135 @@
+[
+  {
+    "src": "sand.png",
+    "north": [0,4,7,8,11],
+    "east": [0,5,8,9,12],
+    "south": [0,2,6,9,13],
+    "west": [0,3,6,7,14]
+  },
+  {
+    "src": "water.png",
+    "north": [1,2],
+    "east": [1,3],
+    "south": [1,4],
+    "west": [1,5]
+  },
+  {
+    "src": "beach_n.png",
+    "north": [0,4,7,8,11],
+    "east": [2,6],
+    "south": [1,4],
+    "west": [2,9]
+  },
+  {
+    "src": "beach_e.png",
+    "north": [3,6],
+    "east": [0,5,8,9,12],
+    "south": [3,7],
+    "west": [1,5]
+  },
+  {
+    "src": "beach_s.png",
+    "north": [1,2],
+    "east": [4,7],
+    "south": [0,2,6,9,13],
+    "west": [4,8]
+  },
+  {
+    "src": "beach_w.png",
+    "north": [5,9],
+    "east": [1,3],
+    "south": [5,8],
+    "west": [0,3,6,7,14]
+  },
+  {
+    "src": "beach_ne.png",
+    "north": [0,4,7,8],
+    "east": [0,5,8,9],
+    "south": [3,7],
+    "west": [2,9]
+  },
+  {
+    "src": "beach_se.png",
+    "north": [3,6],
+    "east": [0,5,8,9],
+    "south": [0,2,6,9],
+    "west": [4,8]
+  },
+  {
+    "src": "beach_sw.png",
+    "north": [5,9],
+    "east": [4,7],
+    "south": [0,2,6,9],
+    "west": [0,3,6,7]
+  },
+  {
+    "src": "beach_nw.png",
+    "north": [0,4,7,8],
+    "east": [2,6],
+    "south": [5,8],
+    "west": [0,3,6,7]
+  },
+  {
+    "src": "grass.png",
+    "north": [10,13,16,17],
+    "east": [10,14,17,18],
+    "south": [10,11,15,18],
+    "west": [10,12,15,16]
+  },
+  {
+    "src": "grass_n.png",
+    "north": [10,13,16,17],
+    "east": [11,15],
+    "south": [0,2,6,9],
+    "west": [11,18]
+  },
+  {
+    "src": "grass_e.png",
+    "north": [12,15],
+    "east": [10,14,17,18],
+    "south": [12,16],
+    "west": [0,3,6,7]
+  },
+  {
+    "src": "grass_s.png",
+    "north": [0,4,7,8],
+    "east": [13,16],
+    "south": [10,11,15,18],
+    "west": [13,17]
+  },
+  {
+    "src": "grass_w.png",
+    "north": [14,18],
+    "east": [0,5,8,9],
+    "south": [14,17],
+    "west": [10,12,15,16]
+  },
+  {
+    "src": "grass_ne.png",
+    "north": [10,13,16,17],
+    "east": [10,14,17,18],
+    "south": [12,16],
+    "west": [11,18]
+  },
+  {
+    "src": "grass_se.png",
+    "north": [12,15],
+    "east": [10,14,17,18],
+    "south": [10,11,15,18],
+    "west": [13,17]
+  },
+  {
+    "src": "grass_sw.png",
+    "north": [14,18],
+    "east": [13,16],
+    "south": [10,11,15,18],
+    "west": [10,12,15,16]
+  },
+  {
+    "src": "grass_nw.png",
+    "north": [10,13,16,17],
+    "east": [11,15],
+    "south": [14,17],
+    "west": [10,12,15,16]
+  }
+]

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WFC Rule Maker</title>
+    <link rel="stylesheet" href="./rule-maker.css">
+    <script type="text/javascript" src="./rule-maker.js" defer></script>
+  </head>
+  <body>
+    <div id="mainContainer">
+      <div id="currentTexture">
+        <img id="currentTile" draggable="false"></img>
+        <div id="north" class="direction"><p>N</p></div>
+        <div id="east" class="direction"><p>E</p></div>
+        <div id="south" class="direction"><p>S</p></div>
+        <div id="west" class="direction"><p>W</p></div>
+      </div>
+      <div id="neighbourList"></div>
+    </div>
+    <div id="textureList"></div>
+    <input type="button" id="download" value="Download JSON"></input>
+  </body>
+</html>

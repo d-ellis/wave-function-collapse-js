@@ -1,0 +1,120 @@
+#mainContainer {
+  display: grid;
+  grid-template-columns: 40rem 1fr;
+  gap: 2rem;
+  padding: 0.5rem;
+  height: 40rem;
+  border-bottom: 1px solid black;
+}
+#currentTexture {
+  width: 40rem;
+  height: 40rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 1fr 2fr 1fr;
+  grid-template-areas:
+    ". north ."
+    "west tile east"
+    ". south .";
+}
+#currentTexture > div {
+  text-align: center;
+  background-color: #e8e8e8;
+  font-size: 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#currentTexture > div.selected {
+  background-color: #8eff8e;
+}
+#currentTexture > div:hover {
+  cursor: pointer;
+  filter: brightness(0.9);
+}
+#currentTexture > div > p {
+  margin: 0;
+}
+#currentTile {
+  border: 2px solid black;
+  box-sizing: border-box;
+  grid-area: tile;
+  width: 100%;
+  height: 100%;
+}
+#north {
+  grid-area: north;
+  border-radius: 2rem 2rem 0 0;
+}
+#east {
+  grid-area: east;
+  border-radius: 0 2rem 2rem 0;
+}
+#south {
+  grid-area: south;
+  border-radius: 0 0 2rem 2rem;
+}
+#west {
+  grid-area: west;
+  border-radius: 2rem 0 0 2rem;
+}
+
+#neighbourList {
+  padding: 1rem;
+  border-left: 1px solid black;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  max-height: 100%;
+  overflow-y: scroll;
+}
+
+.neighbour {
+  width: 5rem;
+  height: 5rem;
+  border: 4px solid red;
+  filter: brightness(0.8);
+}
+.neighbour.selected {
+  filter: brightness(1);
+  transform: scale(1.05);
+  border: 4px solid green;
+}
+.neighbour:hover {
+  filter: brightness(1);
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+#textureList {
+  height: 5rem;
+  padding: 0.5rem;
+  padding-bottom: 1.5rem;
+  display: flex;
+  justify-content: flex-start;
+  box-sizing: content-box;
+  gap: 0.5rem;
+  background-color: #e8e8e8;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow-x: overlay;
+}
+#textureList > img {
+  border: 1px solid black;
+  max-height: 100%;
+  max-width: 100%;
+}
+#textureList > img:hover {
+  cursor: pointer;
+}
+#textureList > img:not(.selected):hover {
+  transform: scale(0.95);
+  filter: brightness(0.9);
+}
+#textureList > img.selected {
+  transform: scale(1.05);
+  filter: brightness(0.8);
+}
