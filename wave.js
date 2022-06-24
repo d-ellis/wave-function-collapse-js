@@ -1,3 +1,17 @@
+/*
+  Times to beat:
+  16:  755.35
+  32:  10,677.8
+  100: Crash
+
+  Final times:
+  16:  53.175
+  32:  211.725
+  100: 2179.625
+
+  All times averaged over four runs
+*/
+
 let gridDOM = [];
 let gridTiles = [];
 let gridEntropy = [];
@@ -7,8 +21,18 @@ document.getElementById('init').addEventListener('click', init);
 document.getElementById('iterate').addEventListener('click', iterate);
 document.getElementById('complete').addEventListener('click', async () => {
   const s = performance.now();
+  const size = gridTiles.length;
   while (!isComplete()) {
-    await iterate();
+    await iterate(true);
+  }
+  let x = 0;
+  while (x < size) {
+    let y = 0;
+    while (y < size) {
+      gridDOM[x][y].src = `./textures/${rules[gridTiles[x][y][0]].src}`;
+      y++;
+    }
+    x++;
   }
   const e = performance.now();
   console.log(`Time taken: ${e - s}ms`);
@@ -38,13 +62,17 @@ async function init() {
   }
 
   // Create new elements
-  for (let x = 0; x < size; x++) {
+  let x = 0;
+  while (x < size) {
     gridDOM.push([]);
     gridTiles.push([]);
     gridEntropy.push([]);
+    x++;
   }
-  for (let x = 0; x < size; x++) {
-    for (let y = 0; y < size; y++) {
+  x = 0;
+  while (x < size) {
+    let y = 0;
+    while (y < size) {
       const tile = document.createElement('img');
       gridDOM[x].push(tile);
       gridTiles[x].push(possibilities);
@@ -52,7 +80,9 @@ async function init() {
       tile.style.width = '100%';
       tile.style.height = '100%';
       container.appendChild(tile);
+      y++;
     }
+    x++;
   }
   addEventListeners();
 }
@@ -60,21 +90,31 @@ async function init() {
 function addEventListeners() {
   const reference = document.getElementById('comparison');
   const size = gridTiles.length;
-  for (let x = 0; x < size; x++) {
-    for (let y = 0; y < size; y++) {
+  let x = 0;
+  while (x < size) {
+    let y = 0;
+    while (y < size) {
+      const thisX = x;
+      const thisY = y;
       gridDOM[x][y].addEventListener('mouseenter', () => {
-        const entropy = gridTiles[x][y].length;
-        for (let t = 0; t < entropy; t++) {
-          reference.childNodes[gridTiles[x][y][t]].style.border = '2px solid green';
+        const entropy = gridTiles[thisX][thisY].length;
+        let t = 0;
+        while (t < entropy) {
+          reference.childNodes[gridTiles[thisX][thisY][t]].style.border = '2px solid green';
+          t++;
         }
       })
       gridDOM[x][y].addEventListener('mouseout', () => {
-        const entropy = gridTiles[x][y].length;
-        for (let t = 0; t < entropy; t++) {
-          reference.childNodes[gridTiles[x][y][t]].style.border = '2px solid transparent';
+        const entropy = gridTiles[thisX][thisY].length;
+        let t = 0;
+        while (t < entropy) {
+          reference.childNodes[gridTiles[thisX][thisY][t]].style.border = '2px solid transparent';
+          t++;
         }
       })
+      y++;
     }
+    x++;
   }
 }
 
@@ -163,25 +203,30 @@ function getPossibleNeighbours(current, other) {
   }
 
   let possibleNeighbours = [];
+  let i = 0;
   switch (direction) {
     case 0:
-      for (let i = 0; i < gridTiles[current[0]][current[1]].length; i++) {
+      while (i < gridTiles[current[0]][current[1]].length) {
         possibleNeighbours = possibleNeighbours.concat([...rules[gridTiles[current[0]][current[1]][i]].north]);
+        i++;
       }
       break;
     case 1:
-      for (let i = 0; i < gridTiles[current[0]][current[1]].length; i++) {
+      while (i < gridTiles[current[0]][current[1]].length) {
         possibleNeighbours = possibleNeighbours.concat([...rules[gridTiles[current[0]][current[1]][i]].east]);
+        i++;
       }
       break;
     case 2:
-      for (let i = 0; i < gridTiles[current[0]][current[1]].length; i++) {
+      while (i < gridTiles[current[0]][current[1]].length) {
         possibleNeighbours = possibleNeighbours.concat([...rules[gridTiles[current[0]][current[1]][i]].south]);
+        i++;
       }
       break;
     case 3:
-      for (let i = 0; i < gridTiles[current[0]][current[1]].length; i++) {
+      while (i < gridTiles[current[0]][current[1]].length) {
         possibleNeighbours = possibleNeighbours.concat([...rules[gridTiles[current[0]][current[1]][i]].west]);
+        i++;
       }
       break;
   }
@@ -198,42 +243,53 @@ async function calculateEntropies(index) {
     const currentIndex = stack.pop();
     // Check cell in every valid direction
     const others = await getValidDirections(currentIndex);
-    for (const other of others) {
+    let o = 0;
+    while (o < others.length) {
       // console.log(other);
       let isAdded = false;
       // Get the possible entries for the other cell
-      let otherPossibilities = [...gridTiles[other[0]][other[1]]];
+      let otherPossibilities = [...gridTiles[others[o][0]][others[o][1]]];
       // If the other cell is already set, skip
-      if (otherPossibilities.length === 1) continue;
+      if (otherPossibilities.length === 1) {
+        o++;
+        continue;
+      }
       // Get all neighbour tiles allowed by current cell
-      const possibleNeighbours = await getPossibleNeighbours(currentIndex, other);
+      const possibleNeighbours = await getPossibleNeighbours(currentIndex, others[o]);
       // For every possibility of the other cell
-      for (let i = 0; i < otherPossibilities.length; i++) {
+      let i = 0;
+      while (i < otherPossibilities.length) {
         const otherPossibility = otherPossibilities[i];
         // If it's not a possibility for this cells neighbours, remove from other cell
         if (!possibleNeighbours.includes(otherPossibility)) {
           const possibilityIndex = otherPossibilities.indexOf(otherPossibility);
           otherPossibilities.splice(possibilityIndex, 1);
-          gridEntropy[other[0]][other[1]]--;
+          gridEntropy[others[o][0]][others[o][1]]--;
           i--;
           // If other isn't in stack already, add to stack
           if (!isAdded) {
-            stack.push(other);
+            stack.push(others[o]);
             isAdded = true;
           }
         }
+        i++;
       }
-      gridTiles[other[0]][other[1]] = [...otherPossibilities];
+      gridTiles[others[o][0]][others[o][1]] = [...otherPossibilities];
+      o++;
     }
   }
 }
 
 function isComplete() {
   const size = gridTiles.length;
-  for (let x = 0; x < size; x++) {
-    for (let y = 0; y < size; y++) {
+  let x = 0;
+  while (x < size) {
+    let y = 0;
+    while (y < size) {
       if (gridEntropy[x][y] !== 1) return false;
+      y++;
     }
+    x++;
   }
   return true;
 }
@@ -242,31 +298,40 @@ function getRandomPossibility([x,y]) {
   return gridTiles[x][y][Math.floor(Math.random()*gridTiles[x][y].length)];
 }
 
-async function iterate() {
+async function iterate(skipTiles = false) {
   // Find grid entry with lowest entropy
   const size = gridTiles.length;
   const index = [-1, -1];
   let lowestEntropy = Infinity;
-  for (let x = 0; x < size; x++) {
-    for (let y = 0; y < size; y++) {
+  let x = 0;
+  while (x < size) {
+    let y = 0;
+    while (y < size) {
       if (gridEntropy[x][y] < lowestEntropy && gridEntropy[x][y] > 1) {
         lowestEntropy = gridEntropy[x][y];
         index[0] = x;
         index[1] = y;
       }
+      y++;
     }
+    x++;
   }
   // Give entry random value
   gridTiles[index[0]][index[1]] = [getRandomPossibility(index)]; //[gridTiles[index[0]][index[1]][Math.floor(Math.random()*gridTiles[index[0]][index[1]].length)]];
   gridEntropy[index[0]][index[1]] = 1;
   // Update entropies
   await calculateEntropies(index);
+  if (skipTiles) return;
   // Update all visuals
-  for (let x = 0; x < size; x++) {
-    for (let y = 0; y < size; y++) {
+  x = 0;
+  while (x < size) {
+    let y = 0;
+    while (y < size) {
       if (gridEntropy[x][y] === 1) {
         gridDOM[x][y].src = `./textures/${rules[gridTiles[x][y][0]].src}`;
       }
+      y++;
     }
+    x++;
   }
 }
