@@ -16,6 +16,12 @@ let gridDOM = [];
 let gridTiles = [];
 let gridEntropy = [];
 let rules = [];
+let selectedTile = null;
+document.body.addEventListener('click', (e) => {
+  if (!e.target.classList.contains('grid-tile') && !e.target.classList.contains('unavailable') && !e.target.parentNode.classList.contains('unavailable')) {
+    resetTileSelection();
+  }
+})
 
 document.getElementById('init').addEventListener('click', init);
 document.getElementById('iterate').addEventListener('click', iterate);
@@ -74,6 +80,7 @@ async function init() {
     let y = 0;
     while (y < size) {
       const tile = document.createElement('img');
+      tile.classList.add('grid-tile');
       gridDOM[x].push(tile);
       gridTiles[x].push(possibilities);
       gridEntropy[x].push(rules.length);
@@ -100,22 +107,37 @@ function addEventListeners() {
         const entropy = gridTiles[thisX][thisY].length;
         let t = 0;
         while (t < entropy) {
-          reference.childNodes[gridTiles[thisX][thisY][t]].style.border = '2px solid green';
+          const thisNode = reference.childNodes[gridTiles[thisX][thisY][t]];
+          if (selectedTile === null) {
+            thisNode.style.border = '2px solid green';
+          }
           t++;
         }
-      })
+      });
       gridDOM[x][y].addEventListener('mouseout', () => {
         const entropy = gridTiles[thisX][thisY].length;
         let t = 0;
         while (t < entropy) {
-          reference.childNodes[gridTiles[thisX][thisY][t]].style.border = '2px solid transparent';
+          const thisNode = reference.childNodes[gridTiles[thisX][thisY][t]];
+          thisNode.style.border = '2px solid transparent';
           t++;
         }
-      })
+      });
+      gridDOM[x][y].addEventListener('click', () => {
+        const selectedTiles = document.querySelectorAll('img.selected');
+        let t = 0;
+        while (t < selectedTiles) {
+          selectedTiles[t].classList.remove('selected');
+          t++;
+        }
+        gridDOM[thisX][thisY].classList.add('selected');
+        prepSelection(thisX, thisY);
+      });
       y++;
     }
     x++;
   }
+
 }
 
 function showComparison() {
@@ -151,6 +173,12 @@ function showComparison() {
     tileContainer.appendChild(east);
     tileContainer.appendChild(south);
     tileContainer.appendChild(west);
+    const thisTile = t;
+    tileContainer.addEventListener('click', () => {
+      if (!tileContainer.classList.contains('unavailable')) {
+        insertTile(thisTile);
+      }
+    });
   }
 }
 
@@ -334,4 +362,40 @@ async function iterate(skipTiles = false) {
     }
     x++;
   }
+}
+
+function prepSelection(x, y) {
+  selectedTile = [x, y];
+  const comparisonTiles = document.querySelectorAll('.tile-ref');
+  let r = 0;
+  while (r < rules.length) {
+    if (gridTiles[x][y].includes(r)) {
+      comparisonTiles[r].classList.add('available');
+      comparisonTiles[r].classList.remove('unavailable');
+    } else {
+      comparisonTiles[r].classList.remove('available');
+      comparisonTiles[r].classList.add('unavailable');
+    }
+    r++;
+  }
+}
+
+function resetTileSelection() {
+  selectedTile = null;
+  const comparisonTiles = document.querySelectorAll('.tile-ref');
+  let t = 0;
+  while (t < comparisonTiles.length) {
+    comparisonTiles[t].classList.remove('available');
+    comparisonTiles[t].classList.remove('unavailable');
+    t++;
+  }
+}
+
+async function insertTile(choice) {
+  gridTiles[selectedTile[0]][selectedTile[1]] = [choice];
+  gridEntropy[selectedTile[0]][selectedTile[1]] = 1;
+  gridDOM[selectedTile[0]][selectedTile[1]].src = `./textures/${rules[gridTiles[selectedTile[0]][selectedTile[1]][0]].src}`;
+
+  await calculateEntropies(selectedTile);
+  resetTileSelection();
 }

@@ -45,3 +45,31 @@ body {
   font-size: 110%;
   background-color: #f0f0f0;
 }
+.tile-ref.available {
+  background-color: green;
+  cursor: pointer;
+}
+.tile-ref.unavailable {
+  filter: brightness(0.5);
+  background-color: #383838;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .inline {
+    grid-template-columns: 1fr;
+    width: min(100vw, 90vh);
+    height: min(100vw, 90vh);
+  }
+  #comparison {
+    display: none;
+  }
+  #output {
+    width: min(100vw, 90vh);
+    height: min(100vw, 90vh);
+  }
+  #controls {
+    height: 10vh;
+    bottom: 0;
+  }
+}
