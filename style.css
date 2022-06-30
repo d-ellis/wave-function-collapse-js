@@ -55,7 +55,7 @@ body {
   cursor: not-allowed;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 800px) {
   .inline {
     grid-template-columns: 1fr;
     width: min(100vw, 90vh);
